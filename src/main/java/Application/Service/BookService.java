@@ -3,6 +3,8 @@ package Application.Service;
 import Application.DAO.BookDAO;
 import Application.Model.Book;
 
+import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -40,7 +42,7 @@ public class BookService {
      * @return all books.
      */
     public List<Book> getAllBooks() {
-        return null;
+        return bookDAO.getAllBooks();
     }
     /**
      * TODO: Use the bookDAO to persist a book to the database.
@@ -51,15 +53,37 @@ public class BookService {
      * key was already in use.)
      */
     public Book addBook(Book book) {
+        if (bookDAO.getBookByIsbn(book.getIsbn()) == null) {
+            bookDAO.insertBook(book);
+            return book;
+        } else {
+            return null;
+        } }
 
-        return null;
+        /*Book addBook = bookDAO.insertBook(book); 
+        if (addBook == null) {
+            
+            return null;
+        } else if {
+            book.setIsbn(addBook.getIsbn());
+            return book;
+        }
     }
     /**
      * TODO: Use the bookDAO to retrieve a list of all books that have a bookCount above 0.
      * @return all available books (bookCount over zero)
      */
     public List<Book> getAllAvailableBooks() {
-        return null;
+        List<Book> allBooks = bookDAO.getAllBooks();
+        List<Book> availableBooks = new ArrayList<>();
+    
+        for (Book book : allBooks) {
+            if (book.getCopies_available() > 0) {
+                availableBooks.add(book);
+            }
+        }
+    
+        return availableBooks;
     }
 
 }
